@@ -1,5 +1,7 @@
 # SamsungTV-RS232-EX-LINK
 Random stuff learned about EX-LINK via RS232
+
+The EX-Link port plugs into a 3.5mm keystone wall jack, to 15m of Solid copper 4 core Station Wire, to a MAX232, to ESP32 PoE ESPHome module, mounted in a 42u rack.  
 ![IMG_4221](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/7c473eed-0ca8-4167-87b7-3281c3cc9de1)
 ![IMG_4223](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/9b0ea4d1-829f-4284-946b-985256ec034a)
 ![IMG_E4238](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/4cb91043-254f-4c83-9ed6-74dd7b29a0e5)
@@ -614,14 +616,6 @@ custom_actions:
       service: button.press
       target:
         entity_id: button.esp32_s3_n16r8_001_channel_down
-  DAZN:
-    icon: dazn
-    tap_action:
-      action: call-service
-      service: media_player.select_source
-      data:
-        entity_id: media_player.samsung_tv
-        source: DAZN
   netflix:
     icon: mdi:netflix
     tap_action:
