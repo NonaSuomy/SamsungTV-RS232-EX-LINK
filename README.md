@@ -12,6 +12,8 @@ The EX-Link port plugs into a 3.5mm keystone wall jack, to 15m of Solid copper 4
 
 If you need to find out a code from your remote enable debug on the EX-Link port
 
+![image](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/af4bb5cc-b9d0-43f5-af45-b841e5b3b5e4)
+
 Connect your RS232 cable to the EX-Link port then open Putty or other terminal Use 115200 baud rate and port.
 
 Power Off -> Mute -> 1,8,2 -> Power On
@@ -47,7 +49,9 @@ Which means the command was sent OK. You should also see the SmartHub come up on
 
 Don't forget to go back in to the Service menu and reverse the changes and restart the TV or RS232 Commands won't work on the EX-LINK port.
 
-The Excel spreadsheets above will help you decypher most of the commands. Check at the bottom of the tizen one as there are more than 1 year sheets in that one not just Tizen.
+![image](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/2e6a7f84-8c82-4723-b18b-5601c65a2c38)
+
+The Excel spreadsheets above will help you decypher most of the commands. Check at the bottom of the tizen one as there are more than 1 TV year sheets in that one not just Tizen.
 
 You can grab 3.3v compatible Dual Port RS232 to TTL converter boards from Aliexpress that should do the same as the board I soldered together above which would make it easier and cheaper. Search terms: RS232 SP3232 TTL to RS232 Module RS232 to TTL MAX3232. The dual port one looks like this:
 
@@ -861,3 +865,50 @@ rows:
     - 0
     - previous
 ```
+
+I have yet to do anything with receiving data from the TV but a few of the commands are in the YAML above to grab some data here are a few examples:
+
+```
+# Get Command:
+# TV Reaction
+# Success / Fail _F1_ _Success_
+# Data Length    _8_
+# Command        _F0_ _0_ _0_ _0_
+# Data Value     _5_ _0_ _0_
+# Category       _Power_
+# Current State  _Normal Mode_
+```
+Get Power On
+8 22 F0 0 0 0 E6
+
+Power Return:
+3 C F1 3 C F5 8 F0 0 0 0 F1 5 0 0     
+
+3 C F1 Command received (FF = fail)
+3 C F5 Getting Data
+8 Data Length
+F0 0 0 0 Repeats back command you sent
+F1 Success
+5 TV Power State is Normal Mode (On)
+0 
+0 
+
+Status:
+F1 Success
+FF Fail
+
+Data Output:
+4 Stand-By
+5 Normal Mode
+8 Off
+
+Get Volume Command
+8 22 F0 1 0 0 E5
+
+Get Volume Return
+3 C F1 3 C F5 8 F0 1 0 0 F1 C 0 0
+C => Volume is at 12
+
+A full write-up is in the 19 tizen spreadsheet above click the GetStatus tab sheet to find out more.
+
+Some TVs may not support this but seems to work fine on a 2016 that I was using otherwise check your connections.  
