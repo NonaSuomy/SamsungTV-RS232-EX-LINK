@@ -12,7 +12,7 @@ The EX-Link port plugs into a 3.5mm keystone wall jack, to 15m of Solid copper 4
 
 If you need to find out a code from your remote enable debug on the EX-Link port
 
-![image](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/af4bb5cc-b9d0-43f5-af45-b841e5b3b5e4)
+![Screenshot 2024-04-26 0528282debug](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/44c3dfce-815d-4f73-afde-49bef692be0e)
 
 Connect your RS232 cable to the EX-Link port then open Putty or other terminal Use 115200 baud rate and port.
 
