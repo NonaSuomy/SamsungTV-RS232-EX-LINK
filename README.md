@@ -3,7 +3,7 @@ Random stuff learned about EX-LINK via RS232
 
 The EX-Link port plugs into a 3.5mm keystone wall jack, to 15m of Solid copper 4 core Station Wire, to a MAX232, to ESP32 PoE ESPHome module, mounted in a 42u rack.  
 ![IMG_4221](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/7c473eed-0ca8-4167-87b7-3281c3cc9de1)
-![IMG_4223](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/9b0ea4d1-829f-4284-946b-985256ec034a)
+![IMG_4223](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/3e8b505a-59b8-4f0d-aaf0-c6e451c54d24)
 ![IMG_E4176](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/16469793-a31a-49a4-b129-2014be62d19a)
 ![IMG_E4238](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/4cb91043-254f-4c83-9ed6-74dd7b29a0e5)
 ![IMG_E4232](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/9ca035bb-92ea-410a-bf94-e73481519ea2)
@@ -50,13 +50,17 @@ Don't forget to go back in to the Service menu and reverse the changes and resta
 The Excel spreadsheets above will help you decypher most of the commands. Check at the bottom of the tizen one as there are more than 1 year sheets in that one not just Tizen.
 
 You can grab 3.3v compatible Dual Port RS232 to TTL converter boards from Aliexpress that should do the same as the board I soldered together above which would make it easier and cheaper. Search terms: RS232 SP3232 TTL to RS232 Module RS232 to TTL MAX3232. The dual port one looks like this:
+
 ![image](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/868a4305-6c6c-4636-8be6-193df3529b43) 
 
 You can also get Serial to 3.5mm jack adapters on there and modules with a DB9 connector built in just make sure you get the right pinout as they can swap the tip and ring pins on some.
 
+![image](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/d4bfea2f-e834-4b1a-b0c4-9cc572199946)
+![image](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/281e7620-c94b-4a4b-bfc3-e410f62914e4)
+
 I personally like the route I chose as then I can extend the RS232 cable side for long runs. If you use the above method you will sort of be limited by the connections to be right at the TV.
 
-My goal was to replicate this IR Remote fully in ESPHome
+My goal was to replicate this IR Remote fully in ESPHome Via the EX-LINK port instead of using IR.
 ![image](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/2dab7b65-653f-4376-9c29-6078426cff6e)
 
 ESPHome YAML
