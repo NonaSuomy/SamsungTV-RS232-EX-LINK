@@ -61,6 +61,7 @@ You can also get Serial to 3.5mm jack adapters on there and modules with a DB9 c
 I personally like the route I chose as then I can extend the RS232 cable side for long runs. If you use the above method you will sort of be limited by the connections to be right at the TV.
 
 My goal was to replicate this IR Remote fully in ESPHome Via the EX-LINK port instead of using IR.
+
 ![image](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/2dab7b65-653f-4376-9c29-6078426cff6e)
 
 ESPHome YAML
