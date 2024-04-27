@@ -2,6 +2,7 @@
 Random stuff learned about EX-LINK via RS232
 
 The EX-Link port plugs into a 3.5mm keystone wall jack, to 15m of Solid copper 4 core Station Wire, to a MAX232, to ESP32 PoE ESPHome module, mounted in a 42u rack.  
+
 ![IMG_4221](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/7c473eed-0ca8-4167-87b7-3281c3cc9de1)
 ![IMG_4223](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/3e8b505a-59b8-4f0d-aaf0-c6e451c54d24)
 ![IMG_E4176](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/16469793-a31a-49a4-b129-2014be62d19a)
@@ -15,6 +16,10 @@ If you need to find out a code from your remote enable debug on the EX-Link port
 ![Screenshot 2024-04-26 0528282debug](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/44c3dfce-815d-4f73-afde-49bef692be0e)
 
 Connect your RS232 cable to the EX-Link port then open Putty or other terminal Use 115200 baud rate and port.
+
+![Img](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/5eaff231-71ae-4da2-b211-29c634a73439)
+
+**Note:** _Putty can't translate hex so you will see nothing in the console when not running debug. Use terraterm or something else that supports serial hex I/O._
 
 Power Off -> Mute -> 1,8,2 -> Power On
 Control -> Sub Option
@@ -184,6 +189,7 @@ uart:
               }
             }
           }
+
 text_sensor:
   - platform: template
     id: "get_status"
@@ -197,15 +203,18 @@ text_sensor:
   - platform: template
     id: "channel_status"
     name: "Channel Status"
+
 sensor:
   - platform: template
     id: "volume_status"
     name: "Volume Status"
     accuracy_decimals: 0
+
 binary_sensor:
   - platform: template
     id: "mute_status"
     name: "Mute Status"
+
 button:
   - platform: restart
     name: "Restart"
@@ -610,7 +619,7 @@ custom_actions:
       action: call-service
       service: button.press
       target:
-        entity_id: button.esp32_s3_n16r8_001_digit
+        entity_id: button.esp32_s3_n16r8_001_dash
   up:
     tap_action:
       action: call-service
@@ -907,7 +916,7 @@ custom_actions:
       action: call-service
       service: button.press
       target:
-        entity_id: button.esp32_s3_n16r8_001_picture_size_screen_fit
+        entity_id: button.esp32_s3_n16r8_001_picture_size
   mts:
     icon: mdi:globe-model
     tap_action:
@@ -989,7 +998,7 @@ rows:
   - - picturesize
     - mts
     - cc
-  - - ota
+  - - tv
     - hdmi1
     - hdmi2
     - av1
@@ -1054,9 +1063,9 @@ Power Return:
 
 `5` TV Power State is Normal Mode (On)
 
-`0`
+`0` Dummy data
 
-`0` 
+`0` Dummy data
 
 Status:
 
@@ -1077,9 +1086,47 @@ Get Volume Command
 `8 22 F0 1 0 0 E5`
 
 Get Volume Return
+
 `3 C F1 3 C F5 8 F0 1 0 0 F1 C 0 0`
+
 Hex C => Volume is at 12
 
-A full write-up is in the 19 tizen spreadsheet above click the GetStatus tab sheet to find out more.
+![image](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/f24a4371-0b15-4710-aa06-d7f8e4de77d0)
 
-Some TVs may not support this but seems to work fine on a 2016 that I was using otherwise check your connections.  
+```yaml
+type: entities
+title: Living Room TV
+entities:
+  - entity: button.esp32_s3_n16r8_001_power_get
+    name: Power Get
+  - entity: sensor.esp32_s3_n16r8_001_power_status
+    name: Power Status
+  - entity: button.esp32_s3_n16r8_001_source_get
+    name: Source Get
+  - entity: sensor.esp32_s3_n16r8_001_source_status
+    name: Source Status
+  - entity: button.esp32_s3_n16r8_001_channel_get
+    name: Channel Get
+  - entity: sensor.esp32_s3_n16r8_001_channel_status
+    name: Channel Status
+  - entity: button.esp32_s3_n16r8_001_volume_get
+    name: Volume Get
+  - entity: sensor.esp32_s3_n16r8_001_volume_status_2
+    name: Volume Status
+  - entity: button.esp32_s3_n16r8_001_mute_get
+    name: Mute Get
+  - entity: binary_sensor.esp32_s3_n16r8_001_mute_status
+    name: Mute Status
+```
+
+A full write-up is in the 19 tizen spreadsheet above. Click the GetStatus tab in the sheet to find out more.
+
+Some TVs may not support this but seems to work fine on a 2016 that I was using. Otherwise check your connections TX RX swap etc.
+
+If you don't have a 3.5mm EX-Link port on your SamsungTV there still may be hope with the USB port. One may be able to convert to an RS232 port changing some settings in the service menu. It uses the D+ and D- of the USB port for UART TX and RX.
+
+![USB](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/257a9de1-25f7-49be-a6f4-625b8cbcbfbb)
+![UART_USB](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/a32bc4ca-2736-4045-8821-e8473f93e650)
+
+
+With newer modules you can also just use the network to control but this method seems to be way more stable on this TV.
