@@ -127,10 +127,85 @@ uart:
   debug:
     direction: BOTH
     dummy_receiver: true
-    after:
-      delimiter: "\n"
     sequence:
-      - lambda: UARTDebug::log_string(direction, bytes);
+      - lambda: UARTDebug::log_hex(direction, bytes, ':');
+      - lambda: if (direction == uart::UART_DIRECTION_RX) id(get_status).publish_state(format_hex_pretty(bytes));
+      - lambda: >
+          if (direction == uart::UART_DIRECTION_RX) {
+            // The get status hex should be 16 bits long
+            if (bytes.size() == 16) {
+              // Power State
+              // 03.0C.F1.03.0C.F5.08.F0.00.00.00.F1.05.00.00.0E (16)
+              if (bytes[8] == 0x00) {
+                if (bytes[12] == 0x05) {
+                  id(power_status).publish_state("On");
+                } else if (bytes[12] == 0x04) {
+                  id(power_status).publish_state("Stand-By");
+                } else if (bytes[12] == 0x08) {
+                  id(power_status).publish_state("Off");
+                }
+              // Volume Status
+              // 03.0C.F1.03.0C.F5.08.F0.01.00.00.F1.07.00.00.0B (16)
+              } else if (bytes[8] == 0x01) {
+                id(volume_status).publish_state(bytes[12]);
+              // Mute Status
+              } else if (bytes[8] == 0x02) {
+                if (bytes[12] == 0x00) {
+                  id(mute_status).publish_state("Off");
+                } else if (bytes[12] == 0x01) {
+                  id(mute_status).publish_state("On");
+              }
+              // Channel Status
+              //                                     Channel/Major/Minor (x12=18,x01=1,x02=2)
+              // 03.0C.F1.03.0C.F5.08.F0.03.00.00.F1.12.01.02.FB (16)
+              } else if (bytes[8] == 0x03) {
+                uint8_t channelprimary = bytes[12];
+                uint8_t channelmajor = bytes[13];
+                uint8_t channelminor = bytes[14];
+                id(channel_status).publish_state(to_string(channelprimary)+"-"+to_string(channelmajor)+"-"+to_string(channelminor));
+              // Source Status
+              } else if (bytes[8] == 0x04) {
+                // 03.0C.F1.03.0C.F5.08.F0.04.00.00.F1.00.00.00.0F (16)
+                if (bytes[12] == 0x00) {
+                  id(source_status).publish_state("TV");
+                // 03.0C.F1.03.0C.F5.08.F0.04.00.00.F1.39.00.00.D6 (16)
+                } else if (bytes[12] == 0x39) {
+                  id(source_status).publish_state("HDMI1");
+                // 03.0C.F1.03.0C.F5.08.F0.04.00.00.F1.3A.00.00.D5 (16)
+                } else if (bytes[12] == 0x3A) {
+                  id(source_status).publish_state("HDMI2");
+                // 03.0C.F1.03.0C.F5.08.F0.04.00.00.F1.1C.00.00.F3 (16)
+                } else if (bytes[12] == 0x1C) {
+                  id(source_status).publish_state("AV1");
+                // 03.0C.F1.03.0C.F5.08.F0.04.00.00.F1.29.00.00.E6 (16)
+                } else if (bytes[12] == 0x29) {
+                  id(source_status).publish_state("Component1");
+                }
+              }
+            }
+          }
+text_sensor:
+  - platform: template
+    id: "get_status"
+    name: "Get Status"
+  - platform: template
+    id: "power_status"
+    name: "Power Status"
+  - platform: template
+    id: "source_status"
+    name: "Source Status"
+  - platform: template
+    id: "channel_status"
+    name: "Channel Status"
+sensor:
+  - platform: template
+    id: "volume_status"
+    name: "Volume Status"
+    accuracy_decimals: 0
+binary_sensor:
+  - platform: template
+    id: "mute_status"
+    name: "Mute Status"
 button:
   - platform: restart
     name: "Restart"
@@ -141,7 +216,7 @@ button:
     data: [0x08, 0x22, 0x00, 0x00, 0x00, 0x00, 0xD6]
   - platform: uart
     uart_id: uart_bus
-    name: "Power On"
+    name: "Power On" # 08 22 00 00 00 02 D4
     data: [0x08, 0x22, 0x00, 0x00, 0x00, 0x02, 0xD4]
   - platform: uart
     uart_id: uart_bus
@@ -165,11 +240,11 @@ button:
     data: [0x08, 0x22, 0x0A, 0x00, 0x00, 0x00, 0xCC]
   - platform: uart
     uart_id: uart_bus
-    name: "HDMI 1 Switch"
+    name: "HDMI 1"
     data: [0x08, 0x22, 0x0A, 0x00, 0x05, 0x00, 0xC7]
   - platform: uart
     uart_id: uart_bus
-    name: "HDMI 2 PC"
+    name: "HDMI 2"
     data: [0x08, 0x22, 0x0A, 0x00, 0x05, 0x01, 0xC6]
   - platform: uart
     uart_id: uart_bus
@@ -177,12 +252,24 @@ button:
     data: [0x08, 0x22, 0x0A, 0x00, 0x01, 0x00, 0xCB]
   - platform: uart
     uart_id: uart_bus
-    name: "COMPONENT"
+    name: "Component1"
     data: [0x08, 0x22, 0x0A, 0x00, 0x03, 0x00, 0xC9]
   - platform: uart
     uart_id: uart_bus
     name: "Source - Smart Hub"
     data: [0x08, 0x22, 0x0D, 0x00, 0x00, 0x79, 0x50]
+  - platform: uart
+    uart_id: uart_bus
+    name: "Source - Netflix"
+    data: [0x08, 0x22, 0x0D, 0x00, 0x00, 0xD7, 0xF2]
+  - platform: uart
+    uart_id: uart_bus
+    name: "Source - Prime"
+    data: [0x08, 0x22, 0x0D, 0x00, 0x00, 0xD6, 0xF3]
+  - platform: uart
+    uart_id: uart_bus
+    name: "Source - YouTube"
+    data: [0x08, 0x22, 0x0D, 0x00, 0x00, 0xD8, 0xF1]
   - platform: uart
     uart_id: uart_bus
     name: "Digit 1"
@@ -237,12 +324,39 @@ button:
     data: [0x08, 0x22, 0x03, 0x00, 0x02, 0x00, 0xD1]
   - platform: uart
     uart_id: uart_bus
-    name: "OTA 10-1"
-    data: [0x08, 0x22, 0x04, 0x00, 0x00, 0x0A, 0xC8] #The second last digit is basically the channel number converted to HEX
+    # 10-1
+    name: "Channel1"
+    data: [0x08, 0x22, 0x04, 0x00, 0x00, 0x0A, 0xC8]
   - platform: uart
     uart_id: uart_bus
-    name: "OTA 69-1"
-    data: [0x08, 0x22, 0x04, 0x00, 0x00, 0x45, 0x8D] #The second last digit is basically the channel number converted to HEX
+    # 14-3
+    name: "Channel2"
+    data: [0x08, 0x22, 0x04, 0x00, 0x00, 0x0E, 0xC4]
+  - platform: uart
+    uart_id: uart_bus
+    # 18-1
+    name: "Channel3"
+    data: [0x08, 0x22, 0x04, 0x00, 0x00, 0x12, 0xC0]
+  - platform: uart
+    uart_id: uart_bus
+    # 19-1
+    name: "Channel4"
+    data: [0x08, 0x22, 0x04, 0x00, 0x00, 0x13, 0xBF]
+  - platform: uart
+    uart_id: uart_bus
+    # 20-1
+    name: "Channel5"
+    data: [0x08, 0x22, 0x04, 0x00, 0x00, 0x14, 0xBE]
+  - platform: uart
+    uart_id: uart_bus
+    # 31-1
+    name: "Channel6"
+    data: [0x08, 0x22, 0x04, 0x00, 0x00, 0x01F, 0xB3]
+  - platform: uart
+    uart_id: uart_bus
+    # 69-1
+    name: "Channel7"
+    data: [0x08, 0x22, 0x04, 0x00, 0x00, 0x45, 0x8D]
   - platform: uart
     uart_id: uart_bus
     name: "Input Source Toggle"
@@ -265,7 +379,7 @@ button:
     data: [0x08, 0x22, 0x0D, 0x00, 0x00, 0x1F, 0xAA]
   - platform: uart
     uart_id: uart_bus
-    name: "Info (Display)"
+    name: "Info Display"
     data: [0x08, 0x22, 0x0D, 0x00, 0x00, 0x1F, 0xAA]
   - platform: uart
     uart_id: uart_bus
@@ -289,11 +403,11 @@ button:
     data: [0x08, 0x22, 0x0D, 0x00, 0x00, 0x65, 0x64]
   - platform: uart
     uart_id: uart_bus
-    name: "Enter (OK)"
+    name: "Enter OK"
     data: [0x08, 0x22, 0x0D, 0x00, 0x00, 0x68, 0x61]
   - platform: uart
     uart_id: uart_bus
-    name: "Return (Back)"
+    name: "Return Back"
     data: [0x08, 0x22, 0x0D, 0x00, 0x00, 0x58, 0x17]
   - platform: uart
     uart_id: uart_bus
@@ -317,7 +431,7 @@ button:
     data: [0x08, 0x22, 0x0D, 0x00, 0x00, 0x16, 0xB3]
   - platform: uart
     uart_id: uart_bus
-    name: "Picture Size: Screen Fit"
+    name: "Picture Size"
     data: [0x08, 0x22, 0x0B, 0x0A, 0x01, 0x05, 0xBB]
   - platform: uart
     uart_id: uart_bus
@@ -379,31 +493,31 @@ button:
     data: [0x08, 0x22, 0x0D, 0x00, 0x00, 0x49, 0x80]
 # Get Command:
 # TV Reaction
-# Success / Fail ___ ___________
-# Data Length    ___
-# Command        ___ ___ ___ ___
-# Data Value     ___ ___ ___
-# Category       _______________
-# Current State  _______________
+# Success / Fail _F1_ _Success_
+# Data Length    _8_
+# Command        _F0_ _0_ _0_ _0_
+# Data Value     _5_ _0_ _0_
+# Category       _Power_
+# Current State  _Normal Mode_
   - platform: uart
     uart_id: uart_bus
-    name: "Get Power"
+    name: "Power Get"
     data: [0x08, 0x22, 0xF0, 0x00, 0x00, 0x00, 0xE6]
   - platform: uart
     uart_id: uart_bus
-    name: "Get Volume"
+    name: "Volume Get"
     data: [0x08, 0x22, 0xF0, 0x01, 0x00, 0x00, 0xE5]
   - platform: uart
     uart_id: uart_bus
-    name: "Get Mute"
+    name: "Mute Get"
     data: [0x08, 0x22, 0xF0, 0x02, 0x00, 0x00, 0xE4]
   - platform: uart
     uart_id: uart_bus
-    name: "Get Channel"
+    name: "Channel Get"
     data: [0x08, 0x22, 0xF0, 0x03, 0x00, 0x00, 0xE3]
   - platform: uart
     uart_id: uart_bus
-    name: "Get Source"
+    name: "Source Get"
     data: [0x08, 0x22, 0xF0, 0x04, 0x00, 0x00, 0xE2]
 ```
 
@@ -654,51 +768,90 @@ custom_actions:
       service: button.press
       target:
         entity_id: button.esp32_s3_n16r8_001_source_prime
-  ota:
+  tv:
     icon: mdi:antenna
     tap_action:
       action: call-service
       service: button.press
       target:
-        entity_id: button.esp32_s3_n16r8_001_ota
+        entity_id: button.esp32_s3_n16r8_001_tv
   hdmi1:
     icon: mdi:nintendo-switch
     tap_action:
       action: call-service
       service: button.press
       target:
-        entity_id: button.esp32_s3_n16r8_001_hdmi_1_switch
+        entity_id: button.esp32_s3_n16r8_001_hdmi1
   hdmi2:
     icon: mdi:hdmi-port
     tap_action:
       action: call-service
       service: button.press
       target:
-        entity_id: button.esp32_s3_n16r8_001_hdmi_2_pc
-  ota0:
+        entity_id: button.esp32_s3_n16r8_001_hdmi2
+  av1:
+    icon: mdi:video-input-component
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_av1
+  component1:
+    icon: mdi:video-input-component
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_component1
+  channel1:
     icon: mdi:robot-love
     tap_action:
       action: call-service
       service: button.press
       target:
-        entity_id: button.esp32_s3_n16r8_001_ota_10_1
-  ota1:
+        entity_id: button.esp32_s3_n16r8_001_channel1
+  channel2:
     icon: mdi:numeric-1-box
-  ota2:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_channel2
+  channel3:
     icon: mdi:numeric-2-box
-  ota3:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_channel3
+  channel4:
     icon: mdi:numeric-3-box
-  ota4:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_channel4
+  channel5:
     icon: mdi:numeric-4-box
-  ota5:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_channel5
+  channel6:
     icon: mdi:numeric-5-box
-  ota6:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_channel6
+  channel7:
     icon: mdi:numeric-6-box
     tap_action:
       action: call-service
       service: button.press
       target:
-        entity_id: button.esp32_s3_n16r8_001_ota_69_1
+        entity_id: button.esp32_s3_n16r8_001_channel7
   prog_red:
     icon: mdi:alpha-a-box-outline
     tap_action:
@@ -839,13 +992,15 @@ rows:
   - - ota
     - hdmi1
     - hdmi2
-  - - ota0
-    - ota1
-    - ota2
-    - ota3
-    - ota4
-    - ota5
-    - ota6
+    - av1
+    - component1
+  - - channel1
+    - channel2
+    - channel3
+    - channel4
+    - channel5
+    - channel6
+    - channel7
   - - rewind
     - pause
     - fast_forward
@@ -866,7 +1021,7 @@ rows:
     - previous
 ```
 
-I have yet to do anything with receiving data from the TV but a few of the commands are in the YAML above to grab some data here are a few examples:
+## Get Commands
 
 ```
 # Get Command:
@@ -878,36 +1033,52 @@ I have yet to do anything with receiving data from the TV but a few of the comma
 # Category       _Power_
 # Current State  _Normal Mode_
 ```
+
 Get Power On
-8 22 F0 0 0 0 E6
+
+`8 22 F0 0 0 0 E6`
 
 Power Return:
-3 C F1 3 C F5 8 F0 0 0 0 F1 5 0 0     
 
-3 C F1 Command received (FF = fail)
-3 C F5 Getting Data
-8 Data Length
-F0 0 0 0 Repeats back command you sent
-F1 Success
-5 TV Power State is Normal Mode (On)
-0 
-0 
+`3 C F1 3 C F5 8 F0 0 0 0 F1 5 0 0`
+
+`3 C F1` Command received (FF = fail)
+
+`3 C F5` Getting Data
+
+`8` Data Length
+
+`F0 0 0 0` Repeats back command you sent
+
+`F1` Success
+
+`5` TV Power State is Normal Mode (On)
+
+`0`
+
+`0` 
 
 Status:
-F1 Success
-FF Fail
+
+`F1` Success
+
+`FF` Fail
 
 Data Output:
-4 Stand-By
-5 Normal Mode
-8 Off
+
+`4` Stand-By
+
+`5` Normal Mode
+
+`8` Off
 
 Get Volume Command
-8 22 F0 1 0 0 E5
+
+`8 22 F0 1 0 0 E5`
 
 Get Volume Return
-3 C F1 3 C F5 8 F0 1 0 0 F1 C 0 0
-C => Volume is at 12
+`3 C F1 3 C F5 8 F0 1 0 0 F1 C 0 0`
+Hex C => Volume is at 12
 
 A full write-up is in the 19 tizen spreadsheet above click the GetStatus tab sheet to find out more.
 
