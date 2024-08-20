@@ -1,0 +1,23 @@
+type: entities
+title: Living Room TV
+entities:
+  - entity: button.esp32_s3_n16r8_001_power_get
+    name: Power Get
+  - entity: sensor.esp32_s3_n16r8_001_power_status
+    name: Power Status
+  - entity: button.esp32_s3_n16r8_001_source_get
+    name: Source Get
+  - entity: sensor.esp32_s3_n16r8_001_source_status
+    name: Source Status
+  - entity: button.esp32_s3_n16r8_001_channel_get
+    name: Channel Get
+  - entity: sensor.esp32_s3_n16r8_001_channel_status
+    name: Channel Status
+  - entity: button.esp32_s3_n16r8_001_volume_get
+    name: Volume Get
+  - entity: sensor.esp32_s3_n16r8_001_volume_status_2
+    name: Volume Status
+  - entity: button.esp32_s3_n16r8_001_mute_get
+    name: Mute Get
+  - entity: binary_sensor.esp32_s3_n16r8_001_mute_status
+    name: Mute Status
