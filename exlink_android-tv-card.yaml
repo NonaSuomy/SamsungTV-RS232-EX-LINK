@@ -1,0 +1,489 @@
+type: custom:android-tv-card
+remote_id: remote.tvsamsung58
+title: Samsung TV 58
+custom_actions:
+  '0':
+    icon: mdi:numeric-0
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_digit_0
+  '1':
+    icon: mdi:numeric-1
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_digit_1
+  '2':
+    icon: mdi:numeric-2
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_digit_2
+  '3':
+    icon: mdi:numeric-3
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_digit_3
+  '4':
+    icon: mdi:numeric-4
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_digit_4
+  '5':
+    icon: mdi:numeric-5
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_digit_5
+  '6':
+    icon: mdi:numeric-6
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_digit_6
+  '7':
+    icon: mdi:numeric-7
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_digit_7
+  '8':
+    icon: mdi:numeric-8
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_digit_8
+  '9':
+    icon: mdi:numeric-9
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_digit_9
+  dash:
+    icon: mdi:minus
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_dash
+  up:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_up
+  down:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_down
+  left:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_left
+  right:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_right
+  center:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_enter_ok
+  power:
+    icon: mdi:power
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_power_toggle
+  source:
+    icon: mdi:star-four-points-circle-outline
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_input_source_toggle
+  hub:
+    icon: mdi:apps
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_source_smart_hub
+  previous:
+    icon: mdi:page-previous-outline
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_previous_channel
+  list:
+    icon: mdi:view-list
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_channel_list
+  menu:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_menu
+  back:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_return_back
+  tools:
+    icon: mdi:tools
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_tools
+  info:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_info_display
+  guide:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_guide
+  exit:
+    icon: mdi:exit-run
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_exit
+  volume_mute:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_mute
+  volume_up:
+    icon: mdi:arrow-up-bold
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_volume_up
+  volume_down:
+    icon: mdi:arrow-down-bold
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_volume_down
+  ch_up:
+    icon: mdi:arrow-up-bold
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_channel_up
+  ch_down:
+    icon: mdi:arrow-down-bold
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_channel_down
+  netflix:
+    icon: mdi:netflix
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_source_netflix
+  youtube:
+    icon: mdi:youtube
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_source_youtube
+  primevideo:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_source_prime
+  tv:
+    icon: mdi:antenna
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_tv
+  hdmi1:
+    icon: mdi:nintendo-switch
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_hdmi1
+  hdmi2:
+    icon: mdi:hdmi-port
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_hdmi2
+  av1:
+    icon: mdi:video-input-component
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_av1
+  component1:
+    icon: mdi:video-input-component
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_component1
+  channel1:
+    icon: mdi:robot-love
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_channel1
+  channel2:
+    icon: mdi:numeric-1-box
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_channel2
+  channel3:
+    icon: mdi:numeric-2-box
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_channel3
+  channel4:
+    icon: mdi:numeric-3-box
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_channel4
+  channel5:
+    icon: mdi:numeric-4-box
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_channel5
+  channel6:
+    icon: mdi:numeric-5-box
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_channel6
+  channel7:
+    icon: mdi:numeric-6-box
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_channel7
+  prog_red:
+    icon: mdi:alpha-a-box-outline
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_red
+  prog_green:
+    icon: mdi:alpha-b-box-outline
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_green
+  prog_yellow:
+    icon: mdi:alpha-c-box-outline
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_yellow
+  prog_blue:
+    icon: mdi:alpha-d-box-outline
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_blue
+  manual:
+    icon: mdi:book-open-blank-variant-outline
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_e_manual
+  search1:
+    icon: mdi:search-web
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_search
+  keypad:
+    icon: mdi:open-in-app
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_keypad
+  picturesize:
+    icon: mdi:resize
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_picture_size
+  mts:
+    icon: mdi:globe-model
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_mts
+  cc:
+    icon: mdi:closed-caption-outline
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_caption
+  rewind:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_rewind
+  pause:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_pause
+  fast_forward:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_fast_forward
+  record:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_record
+  play:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_play
+  stop:
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.esp32_s3_n16r8_001_stop
+rows:
+  - - power
+    - source
+  - - volume_up
+    - volume_mute
+    - ch_up
+  - - volume_down
+    - list
+    - ch_down
+  - - menu
+    - hub
+    - guide
+  - - tools
+    - up
+    - info
+  - - left
+    - enter
+    - right
+  - - back
+    - down
+    - exit
+  - - prog_red
+    - prog_green
+    - prog_yellow
+    - prog_blue
+  - - manual
+    - search1
+    - keypad
+  - - picturesize
+    - mts
+    - cc
+  - - tv
+    - hdmi1
+    - hdmi2
+    - av1
+    - component1
+  - - channel1
+    - channel2
+    - channel3
+    - channel4
+    - channel5
+    - channel6
+    - channel7
+  - - rewind
+    - pause
+    - fast_forward
+  - - record
+    - play
+    - stop
+  - - 1
+    - 2
+    - 3
+  - - 4
+    - 5
+    - 6
+  - - 7
+    - 8
+    - 9
+  - - dash
+    - 0
+    - previous
