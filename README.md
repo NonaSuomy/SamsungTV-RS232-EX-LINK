@@ -5,6 +5,7 @@ The EX-Link port plugs into a 3.5mm keystone wall jack, to 15m of Solid copper 4
 
 ![IMG_4221](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/7c473eed-0ca8-4167-87b7-3281c3cc9de1)
 ![IMG_4223](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/3e8b505a-59b8-4f0d-aaf0-c6e451c54d24)
+![04efb22d52b030ef6790f48f951eb828afeaa50d](https://github.com/user-attachments/assets/ff4e6bdf-801e-4ccc-b91d-1ec67c2621d6)
 ![IMG_E4176](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/16469793-a31a-49a4-b129-2014be62d19a)
 ![IMG_E4238](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/4cb91043-254f-4c83-9ed6-74dd7b29a0e5)
 ![IMG_E4232](https://github.com/NonaSuomy/SamsungTV-RS232-EX-LINK/assets/1906575/9ca035bb-92ea-410a-bf94-e73481519ea2)
