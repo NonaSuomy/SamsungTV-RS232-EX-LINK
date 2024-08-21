@@ -21,13 +21,23 @@ Connect your RS232 cable to the EX-Link port then open Putty or other terminal U
 
 **Note:** _Putty can't translate hex so you will see nothing in the console when not running debug. Use terraterm or something else that supports serial hex I/O._
 
+### Trigger Service Menu
+
 Power Off -> Mute -> 1,8,2 -> Power On
+
+### Service Menu Options
+
 Control -> Sub Option
+
 RS-232 Jack -> Left = Debug
+
 Serial Log On/Off = On
+
 Watchdog = Off
+
 Restart the TV (Turn it off and on again)
 
+### Serial Debug
 
 When you press the button on the remote you will see these keyVal
 ```
